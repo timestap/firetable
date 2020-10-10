@@ -38,6 +38,11 @@ const SubTable = lazy(
 const Percentage = lazy(
   () => import("./Percentage" /* webpackChunkName: "Percentage" */)
 );
+const Number = lazy(() => import("./Number" /* webpackChunkName: "Number" */));
+
+const TextRenderer = lazy(
+  () => import("./Text" /* webpackChunkName: "Text" */)
+);
 const Id = lazy(() => import("./Id" /* webpackChunkName: "Id" */));
 
 /**
@@ -116,11 +121,13 @@ export const getFormatter = (column: any, readOnly: boolean = false) => {
 
     case FieldType.id:
       return withCustomCell(Id, readOnly);
-
+    case FieldType.number:
+      return withCustomCell(Number, readOnly);
     case FieldType.shortText:
     case FieldType.email:
     case FieldType.phone:
-    case FieldType.number:
+      return withCustomCell(TextRenderer, readOnly);
+
     case FieldType.slider:
       return undefined;
 
