@@ -8,6 +8,7 @@ import {
   Button,
 } from "@material-ui/core";
 import Theme from "./Theme";
+import { RecoilRoot } from "recoil";
 
 import CustomBrowserRouter from "./util/CustomBrowserRouter";
 import PrivateRoute from "./util/PrivateRoute";
@@ -51,76 +52,82 @@ const App: React.FC = () => {
     <ThemeProvider theme={Theme(themeCustomization)}>
       <CssBaseline />
       <ErrorBoundary>
-        <AppProvider setTheme={setTheme}>
-          <SnackProvider>
-            <CustomBrowserRouter>
-              <Suspense fallback={<Loading fullScreen />}>
-                <Switch>
-                  <Route exact path={routes.auth} render={() => <AuthView />} />
-                  <Route
-                    exact
-                    path={routes.impersonatorAuth}
-                    render={() => <ImpersonatorAuthView />}
-                  />
-                  <Route
-                    exact
-                    path={routes.signOut}
-                    render={() => <SignOutView />}
-                  />
+        <RecoilRoot>
+          <AppProvider setTheme={setTheme}>
+            <SnackProvider>
+              <CustomBrowserRouter>
+                <Suspense fallback={<Loading fullScreen />}>
+                  <Switch>
+                    <Route
+                      exact
+                      path={routes.auth}
+                      render={() => <AuthView />}
+                    />
+                    <Route
+                      exact
+                      path={routes.impersonatorAuth}
+                      render={() => <ImpersonatorAuthView />}
+                    />
+                    <Route
+                      exact
+                      path={routes.signOut}
+                      render={() => <SignOutView />}
+                    />
 
-                  <PrivateRoute
-                    exact
-                    path={[
-                      routes.home,
-                      routes.tableWithId,
-                      routes.tableGroupWithId,
-                      routes.gridWithId,
-                    ]}
-                    render={() => (
-                      <FiretableContextProvider>
-                        <Switch>
-                          <PrivateRoute
-                            exact
-                            path={routes.home}
-                            render={() => <TablesView />}
-                          />
-                          <PrivateRoute
-                            path={routes.tableWithId}
-                            render={() => <TableView />}
-                          />
-                          <PrivateRoute
-                            path={routes.tableGroupWithId}
-                            render={() => <TableView />}
-                          />
-                        </Switch>
-                      </FiretableContextProvider>
-                    )}
-                  />
+                    <PrivateRoute
+                      exact
+                      path={[
+                        routes.home,
+                        routes.tableWithId,
+                        routes.tableGroupWithId,
+                        routes.gridWithId,
+                      ]}
+                      render={() => (
+                        <FiretableContextProvider>
+                          <Switch>
+                            <PrivateRoute
+                              exact
+                              path={routes.home}
+                              render={() => <TablesView />}
+                            />
+                            <PrivateRoute
+                              path={routes.tableWithId}
+                              render={() => <TableView />}
+                            />
+                            <PrivateRoute
+                              path={routes.tableGroupWithId}
+                              render={() => <TableView />}
+                            />
+                          </Switch>
+                        </FiretableContextProvider>
+                      )}
+                    />
 
-                  <PrivateRoute
-                    render={() => (
-                      <EmptyState
-                        message="Page Not Found"
-                        description={
-                          <Button
-                            component={Link}
-                            to={routes.home}
-                            variant="outlined"
-                            style={{ marginTop: 8 }}
-                          >
-                            Go Home
-                          </Button>
-                        }
-                        fullScreen
-                      />
-                    )}
-                  />
-                </Switch>
-              </Suspense>
-              <Snack />
-            </CustomBrowserRouter>
-          </SnackProvider>
-        </AppProvider>
+                    <PrivateRoute
+                      render={() => (
+                        <EmptyState
+                          message="Page Not Found"
+                          description={
+                            <Button
+                              component={Link}
+                              to={routes.home}
+                              variant="outlined"
+                              style={{ marginTop: 8 }}
+                            >
+                              Go Home
+                            </Button>
+                          }
+                          fullScreen
+                        />
+                      )}
+                    />
+                  </Switch>
+                </Suspense>
+                <Snack />
+              </CustomBrowserRouter>
+            </SnackProvider>
+          </AppProvider>
+        </RecoilRoot>
       </ErrorBoundary>
     </ThemeProvider>
   );
