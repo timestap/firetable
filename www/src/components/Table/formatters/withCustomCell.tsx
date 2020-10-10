@@ -40,8 +40,10 @@ const withCustomCell = (
 ) => (props: FormatterProps<any>) => {
   useStyles();
   const { updateCell } = useFiretableContext();
-  const [component, setComponent] = useState(<></>);
-
+  const value = getCellValue(props.row, props.column.key as string);
+  const [component, setComponent] = useState(
+    typeof value === "string" ? <>{value}</> : <></>
+  );
   useEffect(() => {
     setTimeout(() => {
       setComponent(
